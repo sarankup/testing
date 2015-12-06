@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
 		<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 		<style type='text/css'>
@@ -118,7 +118,7 @@ function listfavoritesfun(elt){
 		  type:'GET',headers:parseheaders,url:'https://www.parse.com/1/classes/listfavorites/',data:'where={"c":'+elt+'}',contentType:"application/json",dataType:'json',
 		  success:function(data){
 			for(var i=0;i<data.results.length;i++){
-				listfavorites.append('<div onclick="aboutfavoritefun(\''+data.results[i].tb+'\',\''+data.results[i].objectId+'\')"><div class="chip"><img src="img/yuna.jpg" alt="Contact Person"/>'+data.results[i].t+'</div></div>');
+				listfavorites.append('<div onclick="aboutfavoritefun(\''+data.results[i].tb+'\',\''+data.results[i].objectId+'\')"><div class="chip"><img src="http://res.cloudinary.com/sarankup/image/upload/v1449413578/moreabout/'+data.results[i].tb+'/'+data.results[i].objectId+'.png" alt="Contact Person"/>'+data.results[i].t+'</div></div>');
 			  }
 		  }
 		}).done(function(){progressbar.hide();moveback()});

@@ -2,9 +2,7 @@
 <widget id="moreaboutmyfavourites.landmark.city" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>More about my favourites</name>
     <description>The hotspot to know all your favorities.</description>
-    <author email="moreaboutmyfavourites@gmail.com" href="www.landmark.city">
-        landmark.city Team
-    </author>
+    <author email="moreaboutmyfavourites@gmail.com" href="www.landmark.city">landmark.city Team</author>
     <content src="index.html" />
     <preference name="permissions" value="none" />
     <preference name="orientation" value="default" />
