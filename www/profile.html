@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <script src="js/jquery-2.1.1.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+	<script src="js/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript">var progressloadcountry=null;var userdd={country:null,isd:null};</script>
+    <script type="text/javascript" src="js/selectize.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/selectize.css" />
+</head>
+<body>
+<header>
+<nav>
+  <ul id="slide-out" class="side-nav">
+    <li><a href="passport.html">Login</a></li>
+    <li><a href="index.html">Home</a></li>
+	<li><a href="logout.html">Logout</a></li>
+	<li><a href="profile.html">Profile</a></li>
+  </ul>
+  <a href="#" data-activates="slide-out" id="sidenav"><font size="6pt" color="red"><i class="mdi-navigation-menu"></i></font></a>
+</nav>
+</header>
+<main>
+<div class="container">
+<div class="container" style='max-width:800px;'>    
+<div class='aboutus'>
+<h1>Your Landmarks</h1>
+<div class="form-group">
+<select class="demo-default" name="country" id="country" onchange="getchildrens('country','state')"><option value="" disabled selected>Select the Country</option></select>
+</div>
+<div class="form-group collapse" id='showstate'>
+<select class="demo-default" name="state" id="state" onchange="getchildrens('state','city')"><option value="" disabled selected>Select the State</option></select>
+</div>
+<div class="form-group collapse" id='showcity'>
+<select class="demo-default" name="city" id="city" onchange="getchildrens('city','area')"><option value="" disabled selected>Select the City</option></select>
+</div>
+<div class="form-group collapse" id='showarea'>
+<select class="demo-default" name="area" id="area" onchange="getchildrens('area','land')"><option value="" disabled selected>Select the Area</option></select>
+</div>
+<div class="form-group collapse" id='showland'>
+<select class="demo-default" name="land" id="land" onchange="addmylandmarks('land','myland')"><option value="" disabled selected>Select your Landmark</option></select>
+</div>
+<p><span>&#x00a0;</span></p>
+<div class="form-group">
+<div style="display:none;" id="progressloadcountry" class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:80%"></div></div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">Your Landmarks</div>
+<div class="panel-body">
+<div id="progresslandmark" class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:80%"></div></div>
+<ol id='myland'></ol>
+</div>
+</div>
+<span id='uiland'> </span>
+</div>
+
+    
+<p> </p>
+
+<div class='aboutus'>
+<h1>Your Interests</h1>
+<div class="form-group">
+<select class="demo-default" name="int" id="int" onchange="addmyinterests('int','myint')"><option value="" disabled selected>Select Interest</option></select>
+</div>
+<p><span>&#x00a0;</span></p>
+<div class="panel panel-default">
+<div class="panel-heading">Your Interests</div>
+<div class="panel-body">
+<div id="progressinterest" class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:80%"></div></div>
+<ol id='myint'></ol>
+</div>
+</div>
+<span id='uiint'></span>
+</div>
+
+<p> </p>
+
+    
+<div class='aboutus'>
+<h1>Profile</h1>
+<form id="profile" name="profile">
+<div class="form-group">
+<input class="form-control" type="text" id="firstname" name="firstname"/>
+</div>
+<div class="form-group">
+<input class="form-control" type="text" id="lastname" name="lastname"/>
+</div>
+<div class="form-group">
+<input class="form-control" type="text" name="email" id="email" value="" readonly/>
+</div>
+<div class="form-group">
+<table><tr><td><select class="form-control" name="day" id="day">
+<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select></td>
+<td><select class="form-control" name="month" id="month">
+<option value="1">January</option>
+<option value="2">February</option>
+<option value="3">March</option>
+<option value="4">April</option>
+<option value="5">May</option>
+<option value="6">June</option>
+<option value="7">July</option>
+<option value="8">August</option>
+<option value="9">September</option>
+<option value="10">Ocotober</option>
+<option value="11">November</option>
+<option value="12">December</option>
+</select></td>
+<td><select class="form-control" id='year' name="year"></select></td></tr></table>
+</div>
+<div class="form-group">
+<select class="form-control" id="gender" name="gender">
+<option value="male">Male</option>
+<option value="female">Female</option>
+<option value="other">Other</option>
+</select>
+</div>
+<div class="form-group">
+<table><tr style='vertical-align:top;'><td><select class="demo-default" style="width:100px;" id="isd" name="isd"></select></td><td><input class="form-control" type="text" id="mobile" name="mobile" placeholder="Phone number"/></td></tr></table>
+</div>
+<div class="form-group">
+<select class="demo-default" id="pcountry" name="pcountry"></select>
+</div>
+<div class="form-group">
+<button type="button" onclick="savemyprofile()" class="btn btn-success">Save</button> <span id='ui'> </span>
+<div style="display:none;" id="progresssave" class="progress"><div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:80%"></div></div>
+</div>
+</form>
+</div>
+
+</div>
+
+<script type="text/javascript" charset="utf-8">
+function removemyland(y){
+    $.ajax({
+	data:'value='+y+'&uid='+localStorage.getItem('uid'),dataType:"jsonp",jsonpCallback:'apiremovemyland',url:"http://www.landmark.city/apiremovemyland",
+	success:function(data){
+        $('#uiland').html(UI[data.r]);
+		$('#my'+y).remove();
+		delete gtempeltland[y];//allow to add further
+	}
+   });
+}
+
+function removemyint(y){
+    $.ajax({
+	data:'value='+y+'&uid='+localStorage.getItem('uid'),dataType:"jsonp",jsonpCallback:'apiremovemyint',url:"http://www.landmark.city/apiremovemyint",
+	success:function(data){
+        $('#uiint').html(UI[data.r]);
+		$('#int').append('<option id="'+y+'" value="'+y+'">'+$('#my'+y).html()+'</option>');
+		$('#my'+y).remove();
+	}
+   });
+}
+
+
+    
+function savemyprofile(){
+    $('#progresssave').show();
+    $.ajax({
+	data:$('#profile').serialize()+'&uid='+localStorage.getItem('uid'),dataType:"jsonp",jsonpCallback:'apisavemyprofile',url:"http://www.landmark.city/apisavemyprofile",
+	success:function(data){
+		$('#ui').html(UI[data.r]);
+	}
+	}).done(function(){$('#progresssave').hide();});
+}
+    
+function addmyinterests(x,y){
+    var tobeadded_val=$('#'+x).val();
+    var tobeadded_text=$('#'+x+' option:selected').text();
+	$.ajax({
+		dataType:"jsonp",jsonpCallback:'apiaddmyinterests',data:'value='+tobeadded_val+'&uid='+localStorage.getItem('uid'),url:"http://www.landmark.city/apiaddmyinterests",
+		success:function(data){
+            $('#uiint').html(UI[data.r]);
+		}
+	});
+    $('#'+tobeadded_val).remove();
+    $('#'+y).append('<li id="my'+tobeadded_val+'" ><a href="#" onclick="removemyint(\''+tobeadded_val+'\')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a> '+tobeadded_text+'</li>');
+}
+    
+function addmylandmarks(x,y){
+    var tobeadded_val=$('#'+x).val();
+	if(gtempeltland.hasOwnProperty(tobeadded_val)==true){return;}//if already exists
+    var tobeadded_text=$('#'+x+' option:selected').text();
+    $.ajax({
+		dataType:"jsonp",jsonpCallback:'apiaddmylandmarks',data:'id='+tobeadded_val+'&value='+tobeadded_text+'&uid='+localStorage.getItem('uid'),url:"http://www.landmark.city/apiaddmylandmarks",
+		success:function(data){
+            $('#uiland').html(UI[data.r]);
+		}
+	});
+    $('#'+tobeadded_val).remove();
+    $('#'+y).append('<li id="my'+tobeadded_val+'" ><a href="#" onclick="removemyland(\''+tobeadded_val+'\')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a> '+tobeadded_text+'</li>');
+	gtempeltland[tobeadded_val]=1;
+}
+    
+function getchildrens(x,y){
+    dds[y].clearOptions();
+    progressloadcountry.show();
+    var dropdown=$('#'+y);
+    $.ajax({
+		dataType:"jsonp",jsonpCallback:'apigetselectedchilds',data:'table='+y+'&p='+$('#'+x).val(),url:"http://www.landmark.city/apigetselectedchilds",
+		success:function(data){
+            $.each(data,function(i,item){
+                dds[y].addOption({id:data[i]._id,t:data[i]['n']});
+			});
+		}
+	}).done(function(){
+        progressloadcountry.hide();
+        $('#show'+y).show();
+    });
+}
+    
+$(document).ready(function(){
+    if(localStorage.getItem('uid')==null){window.location="passport.html";}
+    progressloadcountry=$('#progressloadcountry');
+    gtempeltland={};
+	gcelt=$('#country');
+	gtempelt=$('#isd');
+	gcountry=$('#pcountry');
+    $.each(listofcountries,function(key,item){
+       gcelt.append('<option value="'+key+'">'+item[0]+'</option>');
+	   gtempelt.append('<option value="'+key+'">'+item[0]+' ('+item[1]+')</option>');
+	   gcountry.append('<option value="'+key+'">'+item[0]+'</option>');
+    });
+    dds['state']=$('#state').selectize(ddsopt)[0].selectize;
+    dds['city']=$('#city').selectize(ddsopt)[0].selectize;
+    dds['area']=$('#area').selectize(ddsopt)[0].selectize;
+    dds['land']=$('#land').selectize(ddsopt)[0].selectize;
+    
+    gcelt.selectize();
+    userdd['isd']=gtempelt.selectize()[0].selectize;
+    userdd['country']=gcountry.selectize()[0].selectize;
+    
+    //add years
+    var dateobj=new Date();
+    var yearObj=$('#year');
+    var currdate=[dateobj.getFullYear(),dateobj.getFullYear()-150];
+    for(var gi=currdate[0];gi>currdate[1];gi--){
+        yearObj.append('<option value="'+gi+'">'+gi+'</option>');
+    }
+    
+    //get user profile
+    $.ajax({
+		data:'uid='+localStorage.getItem('uid'),dataType:"jsonp",jsonpCallback:'apigetuserprofile',
+		url:"http://www.landmark.city/apigetuserprofile",
+		success:function(data){
+		    $('#firstname').val(data.firstname);
+            $('#lastname').val(data.lastname);
+            $('#day').val(data.day);
+            $('#month').val(data.month);
+            $('#email').val(data.email);
+            $('#year').val(data.year);
+            $('#gender').val(data.gender);
+            $('#mobile').val(data.mobile);
+			userdd['isd'].setValue(data.isd)//$('#isd').val(data.isd);
+			userdd['country'].setValue(data.pcountry)//$('#pcountry').val(data.pcountry);
+            $.each(data.land,function(key,item){
+				$('#myland').append('<li id="my'+key+'"><a href="#" onclick="removemyland(\''+key+'\')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a> '+item+'</li>');
+				gtempeltland[key]=1;
+				});
+            $('#progresslandmark').hide();
+            for(gi=0;gi<data.int.length;gi++){
+                $('#myint').append('<li id="my'+data.int[gi]+'"><a href="#" onclick="removemyint(\''+data.int[gi]+'\')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a> '+lint[data.int[gi]]+'</li>');
+				delete lint[data.int[gi]];//delete those are already there
+            }//for
+            $('#progressinterest').hide();
+		}//success
+	}).done(function(){completedds();});
+	
+	function completedds(){
+		gcelt=$('#int');
+		$.each(lint,function(key,item){gcelt.append('<option id="'+key+'" value="'+key+'">'+item+'</option>');});
+        gcelt.selectize();
+	}
+	$('#sidenav').sideNav({menuWidth:300,edge:'right',closeOnClick:true});
+});
+</script>
+</div>
+</main>
+</body>
+</html>

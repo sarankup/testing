@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+		<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+		<style type='text/css'>
+		</style>
+		<script type="text/javascript">
+		var progressbar=null;
+		var about=null;
+		var listfavorites=null;
+		var aboutfavorite=null;
+		var parseheaders={'X-Parse-Application-Id':'HyeDiKYRgLddq5kV9GtX1CmTYkA28XVk3QaFi3pT','X-Parse-REST-API-Key':'18c5jbRVdIebRWhbvO1xWuv8OeUscSv16gfjwOno'};
+		var currenttab=0;
+		</script>
+</head>
+<body>
+<header>
+<nav>
+  <ul id="slide-out" class="side-nav">
+    <li><a href="passport.html">Login</a></li>
+    <li><a href="#!">Home</a></li>
+	<li><a href="logout.html">Logout</a></li>
+	<li><a href="profile.html">Profile</a></li>
+	<li><a href="#!">Relevance</a></li>
+  </ul>
+  <a href="#" data-activates="slide-out" id="sidenav"><font size="6pt" color="red"><i class="mdi-navigation-menu"></i></font></a>
+  <a href="#!" data-activates="slide-out" onclick="moveslideback()"><font size="6pt" color="red"><i class="mdi-navigation-menu"></i></font></a><span></span>
+</nav>
+</header>
+<main>
+<div class="container">
+<div id='progressbar' style='display:none;'>
+<div class="progress"><div class="indeterminate"></div></div>
+<div class="progress"><div class="indeterminate"></div></div>
+</div>
+<div class="row" id='about'>
+        <div class="col s6" id='entertainment' onclick="javascript:listfavoritesfun(1)">
+          <div class="card">
+            <div class="card-image">
+              <img src="img/movies.jpg">
+            </div>
+            <div class="card-content"><p>More about yout Movies, Stars, Serials...</p></div>
+          </div>
+        </div>
+		
+		<div class="col s6" id='business' onclick="javascript:listfavoritesfun(2)">
+          <div class="card">
+            <div class="card-image">
+              <img src="img/movies.jpg">
+            </div>
+            <div class="card-content"><p>More about yout Movies, Stars, Serials...</p></div>
+          </div>
+        </div>
+		
+		<div class="col s6" id='technology' onclick="javascript:listfavoritesfun(3)">
+          <div class="card">
+            <div class="card-image">
+              <img src="img/movies.jpg">
+            </div>
+            <div class="card-content"><p>More about yout Movies, Stars, Serials...</p></div>
+          </div>
+        </div>
+		
+		<div class="col s6" id='lifestyle' onclick="javascript:listfavoritesfun(4)">
+          <div class="card">
+            <div class="card-image">
+              <img src="img/movies.jpg">
+            </div>
+            <div class="card-content"><p>More about yout Movies, Stars, Serials...</p></div>
+          </div>
+        </div>
+		
+		<div class="col s6" id='politics' onclick="javascript:listfavoritesfun(5)">
+          <div class="card">
+            <div class="card-image">
+              <img src="img/movies.jpg">
+            </div>
+            <div class="card-content"><p>More about yout Movies, Stars, Serials...</p></div>
+          </div>
+        </div>
+		
+		<div class="col s6" id='sports' onclick="javascript:listfavoritesfun(6)">
+          <div class="card">
+            <div class="card-image">
+              <img src="img/movies.jpg">
+            </div>
+            <div class="card-content"><p>More about yout Movies, Stars, Serials...</p></div>
+          </div>
+        </div>
+		
+      </div>  
+<div id='listfavorites' class='row' style='padding:10px 10px 10px 10px;'></div>
+<div id='aboutfavorite' class='row'></div>
+<div id='userinfo'></div>
+</div>
+</main>
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#sidenav').sideNav({menuWidth:300,edge:'right',closeOnClick:true});
+	about=$('#about');
+	listfavorites=$('#listfavorites');
+	aboutfavorite=$('#aboutfavorite');
+	progressbar=$('#progressbar');
+});
+
+function listfavoritesfun(elt){
+	progressbar.show();currenttab=1;listfavorites.html('');
+	$.ajax({
+		  type:'GET',headers:parseheaders,url:'https://www.parse.com/1/classes/listfavorites/',data:'where={"c":'+elt+'}',contentType:"application/json",dataType:'json',
+		  success:function(data){
+			for(var i=0;i<data.results.length;i++){
+				listfavorites.append('<div onclick="aboutfavoritefun(\''+data.results[i].tb+'\',\''+data.results[i].objectId+'\')"><div class="chip"><img src="img/yuna.jpg" alt="Contact Person"/>'+data.results[i].t+'</div></div>');
+			  }
+		  }
+		}).done(function(){progressbar.hide();moveback()});
+}
+function aboutfavoritefun(tbl,oid){
+	progressbar.show();currenttab=2;aboutfavorite.html('');
+	$.ajax({
+		  type:'GET',headers:parseheaders,url:"https://www.parse.com/1/classes/"+tbl+"/",data:'where={"oid":"'+oid+'"}',contentType:"application/json",dataType:'json',
+		  success:function(data){
+		  for(var i=0;i<data.results.length;i++){
+				aboutfavorite.append("<div onclick='openbrowser(\""+data.results[i].u+"\")' class='col s12'><div class='card'><div class='card-content'>"+data.results[i].tx+"</div></div></div>");
+			  }
+		  }
+		}).done(function(){progressbar.hide();moveback()});
+}
+function moveslideback(){
+	if(currenttab==0){return true;}
+	currenttab--;
+	moveback();
+	return true;
+}
+function moveback(){
+	switch(currenttab){
+		case 1:
+			listfavorites.show();
+			aboutfavorite.hide();
+			about.hide();
+			break;
+		case 2:
+			listfavorites.hide();
+			aboutfavorite.show();
+			about.hide();
+			break;
+		default:
+			listfavorites.hide();
+			aboutfavorite.hide();
+			about.show();
+	}
+	return true;
+}
+function openbrowser(url){
+window.open(url,'_blank','location=yes');
+}
+</script>
+</body>
+</html>

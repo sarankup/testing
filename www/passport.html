@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <script src="js/jquery-2.1.1.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+	<script src="js/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="js/materialize.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+	<script type="text/javascript" charset="utf-8">
+	function pagereload(){window.location="passport.html";}
+    document.addEventListener("deviceready",onDeviceReady,false);
+	var ref=null;
+    function onDeviceReady(){}
+    function callinappbrowser(vendor){
+		ref=window.open('http://www.landmark.city/login/'+vendor,'_blank','location=yes');
+		ref.addEventListener('loadstart',function(event){
+			//console.log('start: '+event.url);
+			var urlsplit=event.url+'';
+			if(urlsplit.indexOf("loginapiredirect?uid=")!=-1){
+				urlsplit=urlsplit.split("loginapiredirect?uid=");
+				urlsplit=urlsplit[1].split('&',1);
+				localStorage.setItem('uid',urlsplit[0]);
+				ref.close();
+			}
+		});
+		ref.addEventListener('loadstop',function(event){console.log('loadstop');});
+        ref.addEventListener('loaderror',function(event){console.log('loaderror' + event.message); });
+		ref.addEventListener('exit',function(event){console.log('closing'+event.url);pagereload();});
+    }
+    </script>
+</head>
+<body>
+<header>
+<nav>
+  <ul id="slide-out" class="side-nav">
+    <li><a href="passport.html">Login</a></li>
+    <li><a href="index.html">Home</a></li>
+	<li><a href="logout.html">Logout</a></li>
+	<li><a href="profile.html">Profile</a></li>
+  </ul>
+  <a href="#" data-activates="slide-out" id='sidenav'><font size="6pt" color="red"><i class="mdi-navigation-menu"></i></font></a>
+</nav>
+</header>
+<main>
+<div class="container">
+<div style='max-width:500px;' class="container">
+<div class="formlogin">
+	<form id="loginsubmit">
+		<div class="form-group"><input class="form-control" type="email" name="uid" id="uid" placeholder='Email ID' required></div>
+		<div class="form-group"><input type="password" class="form-control" name="password" id="password" placeholder='Password' required></div>
+		<button type="button" onclick="loginsubmit()" class="btn btn-success">Login</button> <span id='ui'> </span>
+	</form>
+	<p><a href="signup.html">Need an account?</a> | <a href="forgotpassword.html">Forgot Password?</a></p>
+	<hr>
+</div>
+
+<div id="sociallogin" style='text-align:center;'>
+<div class="row">
+<div class="col s12 m6"><a href='#' onclick="callinappbrowser('facebook');return false;"><img src="img/facebook.png"/></a></div>
+<div class="col s12 m6"><a href='#' onclick="callinappbrowser('google');return false;"><img src="img/google.png"/></a></div>
+<div class="col s12 m6"><a href='#' onclick="callinappbrowser('twitter');return false;"><img src="img/twitter.png"/></a></div>
+<div class="col s12 m6"><a href='#' onclick="callinappbrowser('linkedin');return false;"><img src="img/linkedin.png"/></a></div>
+<div class="col s12 m6"><a href='#' onclick="callinappbrowser('live');return false;"><img src="img/live.png"/></a></div>
+<div class="col s12 m6"><a href='#' onclick="callinappbrowser('github');return false;"><img src="img/github.png"/></a></div>
+</div>
+</div>
+</div>
+    
+<script type='text/javascript'>
+$(document).ready(function(){
+if(localStorage.getItem('uid')!=null){loginsubmitauto();}
+//form validation
+$("#loginsubmit").validate({
+	rules:{
+		password:{required:true,minlength:5},
+		email:{required:true,email:true}	
+	},
+	messages:{
+		password:"Please provide a password",
+		uid:"Please enter a valid email address.."
+	}
+});//form validation
+$('#sidenav').sideNav({menuWidth:300,edge:'right',closeOnClick:true});
+});
+
+function loginsubmitauto(){
+    $.ajax({
+		data:'uid='+localStorage.getItem('uid'),url:"http://www.landmark.city/apiloginsubmitauto",dataType:"jsonp",jsonpCallback:'apiloginsubmitauto',
+		success:function(data){
+            $('#ui').html(UI[data.r]);
+			if(data.r==4){setTimeout(pageredirect(data.fp),10000);}
+			else{localStorage.removeItem('uid');}
+		}
+	}).fail(function(){localStorage.removeItem('uid');});
+}
+
+function loginsubmit(){
+	if($("#loginsubmit").valid()==false)return;
+	var username=$('#uid').val();
+	username=username.toLowerCase();
+	username=username.trim();
+    $.ajax({
+		data:'uid='+username+'&password='+$('#password').val(),url:"http://www.landmark.city/apiloginsubmit",dataType:"jsonp",jsonpCallback:'apiloginsubmit',
+		success:function(data){
+			$('#ui').html(UI[data.r]);
+			if(data.r==4){
+				localStorage.setItem('uid',data.uid);setTimeout(pageredirect(data.fp),10000);
+			}else{
+				localStorage.removeItem('uid');
+			}
+		}
+	});
+}
+</script>
+</div>
+</main>
+</body>
+</html>

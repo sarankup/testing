@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <script src="js/jquery-2.1.1.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+	<script src="js/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript">var progressloadcountry=null;var userdd={country:null,isd:null};</script>
+    <script type="text/javascript" src="js/selectize.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/selectize.css" />
+</head>
+<body>
+<header>
+<nav>
+  <ul id="slide-out" class="side-nav">
+    <li><a href="passport.html">Login</a></li>
+    <li><a href="#!">Home</a></li>
+	<li><a href="logout.html">Logout</a></li>
+	<li><a href="profile.html">Profile</a></li>
+	<li><a href="#!">Relevance</a></li>
+  </ul>
+  <a href="#" data-activates="slide-out" id="sidenav"><font size="6pt" color="red"><i class="mdi-navigation-menu"></i></font></a>
+</nav>
+</header>
+<main>
+<div class="container">
+<div class="col-sm-6 col-sm-offset-3">
+<div class="page-header"><h1>New User Registration</h1></div>
+	<form id="sigup">
+		<div class="form-group"><input type="email" class="form-control" id="uid" name="uid" placeholder='Email ID' required></div>
+		<div class="form-group"><input type="password" class="form-control" id="password" name="password" placeholder='Password' required></div>
+        <button onclick='signupsubmit()' type="button" class="btn btn-success">Register</button> <span id='ui'></span>
+	</form>
+	<hr>
+	
+<p>Already have an account? <a href="passport.html">Login</a></p>
+</div>
+</div>
+</main>
+    
+<script type='text/javascript'>
+$(document).ready(function(){
+//form validation
+$("#sigup").validate({
+	rules:{
+		password:{required:true,minlength:5},
+		email:{required:true,email:true}	
+	},
+	messages:{
+		password:"Please provide a password",
+		uid:"Please enter a valid email address"
+	}
+});//form validation
+$('#sidenav').sideNav({menuWidth:300,edge:'right',closeOnClick:true});
+});//ready
+
+function signupsubmit(){
+    if($("#sigup").valid()==false)return;
+	var username=$('#uid').val();
+	username=username.toLowerCase();
+	username=username.trim();
+    $.ajax({
+		data:'uid='+$('#uid').val()+'&password='+$('#password').val(),url:"http://www.landmark.city/apisignupsubmit",dataType:"jsonp",jsonpCallback:'apisignupsubmit',
+		success:function(data){
+            $('#ui').html(UI[data.r]);
+            if(data.r==3){
+                setTimeout(pageredirect(data.fp),10000);
+            }
+		}
+	});
+}
+</script>
+</script>
+</body>
+</html>
