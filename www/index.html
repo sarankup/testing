@@ -11,11 +11,21 @@
 		</style>
 		<script type="text/javascript">
 		var progressbar=null;
+		var messagebar=null;
 		var about=null;
 		var listfavorites=null;
 		var aboutfavorite=null;
 		var parseheaders={'X-Parse-Application-Id':'HyeDiKYRgLddq5kV9GtX1CmTYkA28XVk3QaFi3pT','X-Parse-REST-API-Key':'18c5jbRVdIebRWhbvO1xWuv8OeUscSv16gfjwOno'};
 		var currenttab=0;
+		var myurl=null;
+		var listoftabs={
+		entertainment:{c:1,cap:'More about yout Movies, Stars, Serials...'},
+		business:{c:2,cap:'More about yout Movies, Stars, Serials...'},
+		technology:{c:3,cap:'More about yout Movies, Stars, Serials...'},
+		lifestyle:{c:4,cap:'More about yout Movies, Stars, Serials...'},
+		politics:{c:5,cap:'More about yout Movies, Stars, Serials...'},
+		sports:{c:6,cap:'More about yout Movies, Stars, Serials...'}
+		};
 		</script>
 </head>
 <body>
@@ -24,10 +34,9 @@
 <nav>
   <ul id="slide-out" class="side-nav">
     <li><a href="passport.html">Login</a></li>
-    <li><a href="#!">Home</a></li>
+    <li><a href="index.html">Home</a></li>
 	<li><a href="logout.html">Logout</a></li>
 	<li><a href="profile.html">Profile</a></li>
-	<li><a href="#!">Relevance</a></li>
   </ul>
   <a href="#" data-activates="slide-out" id="sidenav"><font size="100%"><i class="mdi-navigation-menu"></i></font></a>
   <a href="#!" data-activates="slide-out" onclick="moveslideback()"><font size="100%"><i class="mdi-navigation-chevron-left"></i></font></a>
@@ -36,66 +45,12 @@
 </header>
 <main>
 <div class="container">
+<div id='messagebar' style='display:none;'></div>
 <div id='progressbar' style='display:none;'>
 <div class="progress"><div class="indeterminate"></div></div>
 <div class="progress"><div class="indeterminate"></div></div>
 </div>
-<div class="row" id='about'>
-        <div class="col s6" id='entertainment' onclick="javascript:listfavoritesfun(1)">
-          <div class="card">
-            <div class="card-image">
-              <img src="img/movies.jpg">
-            </div>
-            <div class="card-content"><p>More about yout Movies, Stars, Serials...</p></div>
-          </div>
-        </div>
-		
-		<div class="col s6" id='business' onclick="javascript:listfavoritesfun(2)">
-          <div class="card">
-            <div class="card-image">
-              <img src="img/movies.jpg">
-            </div>
-            <div class="card-content"><p>More about yout Movies, Stars, Serials...</p></div>
-          </div>
-        </div>
-		
-		<div class="col s6" id='technology' onclick="javascript:listfavoritesfun(3)">
-          <div class="card">
-            <div class="card-image">
-              <img src="img/movies.jpg">
-            </div>
-            <div class="card-content"><p>More about yout Movies, Stars, Serials...</p></div>
-          </div>
-        </div>
-		
-		<div class="col s6" id='lifestyle' onclick="javascript:listfavoritesfun(4)">
-          <div class="card">
-            <div class="card-image">
-              <img src="img/movies.jpg">
-            </div>
-            <div class="card-content"><p>More about yout Movies, Stars, Serials...</p></div>
-          </div>
-        </div>
-		
-		<div class="col s6" id='politics' onclick="javascript:listfavoritesfun(5)">
-          <div class="card">
-            <div class="card-image">
-              <img src="img/movies.jpg">
-            </div>
-            <div class="card-content"><p>More about yout Movies, Stars, Serials...</p></div>
-          </div>
-        </div>
-		
-		<div class="col s6" id='sports' onclick="javascript:listfavoritesfun(6)">
-          <div class="card">
-            <div class="card-image">
-              <img src="img/movies.jpg">
-            </div>
-            <div class="card-content"><p>More about yout Movies, Stars, Serials...</p></div>
-          </div>
-        </div>
-		
-      </div>  
+<div class="row" id='about'></div>  
 <div id='listfavorites' class='row' style='padding:10px 10px 10px 10px;'></div>
 <div id='aboutfavorite' class='row'></div>
 <div id='userinfo'></div>
@@ -110,10 +65,14 @@ $(document).ready(function(){
 	listfavorites=$('#listfavorites');
 	aboutfavorite=$('#aboutfavorite');
 	progressbar=$('#progressbar');
+	messagebar=$('#messagebar');
+	for(var keys in listoftabs){
+		about.append('<div class="col s6" id="'+keys+'" onclick="javascript:listfavoritesfun('+listoftabs[keys].c+')"><div class="card"><div class="card-image"><img src="img/'+listoftabs[keys].c+'.jpg"></div><div class="card-content"><p>'+listoftabs[keys].cap+'</p></div></div></div>');
+	}
 });
 
 function listfavoritesfun(elt){
-	progressbar.show();currenttab=1;listfavorites.html('');
+	progressbar.show();currenttab=1;listfavorites.html('');messagebar.hide();
 	$.ajax({
 		  type:'GET',headers:parseheaders,url:'https://www.parse.com/1/classes/listfavorites/',data:'where={"c":'+elt+'}',contentType:"application/json",dataType:'json',
 		  success:function(data){
@@ -121,18 +80,18 @@ function listfavoritesfun(elt){
 				listfavorites.append('<div onclick="aboutfavoritefun(\''+data.results[i].tb+'\',\''+data.results[i].objectId+'\')"><div class="chip"><img src="http://res.cloudinary.com/sarankup/image/upload/v1449413578/moreabout/'+data.results[i].tb+'/'+data.results[i].objectId+'.png" alt="Contact Person"/>'+data.results[i].t+'</div></div>');
 			  }
 		  }
-		}).done(function(){progressbar.hide();moveback()});
+		}).done(function(){progressbar.hide();moveback()}).fail(function(){messagebar.html('Error in connection').show();progressbar.hide();});
 }
 function aboutfavoritefun(tbl,oid){
-	progressbar.show();currenttab=2;aboutfavorite.html('');
+	progressbar.show();currenttab=2;aboutfavorite.html('');messagebar.hide();
 	$.ajax({
 		  type:'GET',headers:parseheaders,url:"https://www.parse.com/1/classes/"+tbl+"/",data:'where={"oid":"'+oid+'"}',contentType:"application/json",dataType:'json',
 		  success:function(data){
 		  for(var i=0;i<data.results.length;i++){
-				aboutfavorite.append("<div onclick='openbrowser(\""+data.results[i].u+"\")' class='col s12'><div class='card'><div class='card-content'>"+data.results[i].tx+"</div></div></div>");
+				aboutfavorite.append('<div class="row"><div class="col s12 m6"><div class="card blue-grey darken-1"><div class="card-content white-text">'+data.results[i].tx+'<div id="act'+data.results[i].objectId+'"></div></div><div class="card-action"><span onclick="openbrowser(\''+data.results[i].u+'\')"><a class="btn-floating white"><img src="img/media/'+data.results[i].t+'.png?'+new Date().getTime()+'"></a></span> <span onclick="socialshare(\''+data.results[i].objectId+'\',\''+data.results[i].u+'\')"><a class="btn-floating green"><i class="mdi-social-share"></i></a></span></div></div></div></div>');
 			  }
 		  }
-		}).done(function(){progressbar.hide();moveback()});
+		}).done(function(){progressbar.hide();moveback()}).fail(function(){messagebar.html('Error in connection').show();progressbar.hide();});
 }
 function moveslideback(){
 	if(currenttab==0){return true;}
@@ -161,6 +120,27 @@ function moveback(){
 }
 function openbrowser(url){
 window.open(url,'_blank','location=yes');
+}
+
+function socialshare(gpid,url){
+myurl=url;
+$('#share'+gpid).remove();//myreview form to write
+var gcelt=$('#act'+gpid);
+gcelt.append('<div id="share'+gpid+'" class="form-inline"><div class="form-group"><input type="email" id="shareemail'+gpid+'" class="form-control"  placeholder="someone@domain.com"></div><button type="button" onclick="sendshareemail(\''+gpid+'\');" class="btn btn-default">Share</button></div>');
+}
+function deleteit(elt){
+
+}
+function sendshareemail(pid){
+var username=$("#shareemail"+pid).val();
+username=username.toLowerCase();
+username=username.trim().replace(/\s/g,'');
+$.ajax({
+	data:'to='+username+'&url='+myurl+'&uid='+localStorage.getItem('uid'),url:'http://www.landmark.city/mapisendshareemail',dataType:"jsonp",jsonpCallback:'mapisendshareemail',
+	success:function(data){
+        $('#act'+pid).html(UI[data.r]);
+	}
+});
 }
 </script>
 </body>

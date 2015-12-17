@@ -9,6 +9,8 @@
 	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 	<script src="js/jquery.validate.min.js"></script>
+	<script src="js/UIEN.js"></script>
+	<script src="js/homevariables.js"></script>
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
 	<script type="text/javascript" charset="utf-8">
@@ -43,13 +45,14 @@
 	<li><a href="logout.html">Logout</a></li>
 	<li><a href="profile.html">Profile</a></li>
   </ul>
-  <a href="#" data-activates="slide-out" id='sidenav'><font size="6pt" color="red"><i class="mdi-navigation-menu"></i></font></a>
+  <a href="#" data-activates="slide-out" id="sidenav"><font size="100%"><i class="mdi-navigation-menu"></i></font></a>
 </nav>
 </header>
 <main>
 <div class="container">
 <div style='max-width:500px;' class="container">
 <div class="formlogin">
+<div class="page-header"><h4>Login</h4></div>
 	<form id="loginsubmit">
 		<div class="form-group"><input class="form-control" type="email" name="uid" id="uid" placeholder='Email ID' required></div>
 		<div class="form-group"><input type="password" class="form-control" name="password" id="password" placeholder='Password' required></div>
@@ -107,6 +110,7 @@ function loginsubmit(){
     $.ajax({
 		data:'uid='+username+'&password='+$('#password').val(),url:"http://www.landmark.city/apiloginsubmit",dataType:"jsonp",jsonpCallback:'apiloginsubmit',
 		success:function(data){
+		console.log(data);
 			$('#ui').html(UI[data.r]);
 			if(data.r==4){
 				localStorage.setItem('uid',data.uid);setTimeout(pageredirect(data.fp),10000);
